@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>ACCOUNT DETAILS</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="w3-animate-zoom" style="background-image:url('https://media.istockphoto.com/id/1358767025/photo/christmas-gift-box-with-red-ribbon-and-empty-label-for-text-and-santa-hat.webp?b=1&s=170667a&w=0&k=20&c=jsJeT1yKe0s7pMKWOqGMka-Azu-XaKQAFICN_S3SEUc=')">
+    <div class="w3-panel">
+        <div class="w3-bar w3-black w3-large">
+            <a href="home" class="w3-bar-item w3-button w3-mobile">Home</a>
+            <a href="join_group" class="w3-bar-item w3-button w3-mobile">Join Group</a>
+            <a href="create_group" class="w3-bar-item w3-button w3-mobile">Create Group</a>
+            <div class="w3-dropdown-hover w3-mobile w3-right">
+                <button class="w3-button fa fa-user w3-xlarge">My Account<i class="fa fa-caret-down"></i></button>
+                <div class="w3-dropdown-content w3-bar-block w3-dark-grey">
+                    <a href="profile" class="w3-bar-item w3-button w3-mobile w3-green">Account Details</a>
+                    <a href="my_groups" class="w3-bar-item w3-button w3-mobile">My Groups</a>
+                    <a href="authorisation" class="w3-bar-item w3-button w3-mobile">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w3-card w3-padding-large w3-display-middle w3-topbar w3-bottombar w3-leftbar w3-rightbar w3-hover-border-gray w3-border-teal w3-light-blue" style="width:1000px">
+        <ul class="w3-ul w3-card-4 w3-pale-green">
+            <li class="w3-bar">
+              <div class="w3-bar-item w3-left">
+                <span class="w3-xlarge"><i class="w3-xxlarge fa fa-user">&nbsp;&nbsp;</i>Username</span><br>
+                <span><h3>{{data[3]}}</h3></span>
+              </div>
+              <div class="w3-bar-item" style="position:absolute;left:700px">
+                <span class="w3-xlarge"><i class="w3-xxlarge fa fa-lock">&nbsp;&nbsp;</i>Password</span><br>
+                <span><h3 id="hide" onmouseover="show()" onmouseleave="hide()">{{data[4]}}</h3></span>
+              </div>
+            </li>
+            <li class="w3-bar">
+              <div class="w3-bar-item w3-left">
+                <span class="w3-xlarge"><i class="w3-xxlarge fa fa-envelope-o">&nbsp;&nbsp;</i>Email</span><br>
+                <span><h3>{{data[5]}}</h3></span>
+              </div>
+              <div class="w3-bar-item" style="position:absolute;left:700px">
+                <span class="w3-xlarge"><i class="w3-xxlarge fa fa-pencil">&nbsp;&nbsp;</i>Name</span><br>
+                <span><h3>{{data[0]}}</h3></span>
+              </div>
+            </li>
+            <li class="w3-bar">
+              <div class="w3-bar-item w3-left">
+                <span class="w3-xlarge"><i class="w3-xxlarge fa fa-calendar">&nbsp;&nbsp;</i>Date of birth</span><br>
+                <span><h3>{{data[1]}}</h3></span>
+              </div>
+              <div class="w3-bar-item" style="position:absolute;left:700px">
+                {% if data[2] == gender[0] %}
+                    <span class="w3-xlarge"><i class="w3-xxlarge fa fa-male">&nbsp;&nbsp;</i>Gender</span><br>
+                {% elif data[2] == gender[1] %}
+                    <span class="w3-xlarge"><i class="w3-xxlarge fa fa-female">&nbsp;&nbsp;</i>Gender</span><br>
+                {% else %}
+                    <span class="w3-xlarge"><i class="w3-xxlarge fa fa-genderless">&nbsp;&nbsp;</i>Gender</span><br>
+                {% endif %}
+                <span><h3>{{data[2]}}</h3></span>
+              </div>
+            </li>
+            <form method="post">
+                <button class="w3-button w3-xlarge w3-circle w3-teal w3-right" id="del" name="del">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </form>
+            <button class="w3-button w3-xlarge w3-circle w3-teal w3-right" id="edit" name="edit" onclick="edit_profile()" style="position:relative;left:-20px">
+                <i class="fa fa-pencil"></i>
+            </button>
+        </ul>
+    </div>
+
+    <div class="w3-card w3-display-middle w3-cell" style="width:610px;display:none" id="edit_profile">
+        <span onclick="this.parentElement.style.display='none'"
+        class="w3-button w3-large w3-display-topright">&times;</span>
+        <form method="post" class="w3-container w3-card-4 w3-light-grey w3-text-blue w3-margin">
+            <h2 class="w3-center">EDIT YOUR PROFILE</h2>
+
+            <div class="w3-row w3-section">
+              <div class="w3-col" style="width:50px"><i class="w3-xxlarge fa fa-user"></i></div>
+                <div class="w3-rest">
+                  <input class="w3-input w3-border" value={{data[3]}} name="username" type="text" placeholder="Username" required>
+                </div>
+            </div>
+
+            <div class="w3-row w3-section">
+              <div class="w3-col" style="width:50px"><i class="w3-xxlarge fa fa-lock"></i></div>
+                <div class="w3-rest">
+                  <input class="w3-input w3-border" id='password' value={{data[4]}} name="password" type="password" placeholder="Password" required>
+                  <span class="toggle-password w3-text-blue" onclick="togglePasswordVisibility('password')">Show</span>
+                </div>
+            </div>
+
+            <div class="w3-row w3-section">
+              <div class="w3-col" style="width:50px"><i class="w3-xxlarge fa fa-envelope-o"></i></div>
+                <div class="w3-rest">
+                    <input class="w3-input w3-border" value={{data[5]}} name="email" type="email" placeholder="Email" required>
+                </div>
+            </div>
+
+            <div class="w3-row w3-section">
+              <div class="w3-col" style="width:50px"><i class="w3-xxlarge fa fa-pencil"></i></div>
+                <div class="w3-rest">
+                    <input class="w3-input w3-border" value={{data[0]}} name="name" type="text" placeholder="Name" required>
+                </div>
+            </div>
+
+            <div class="w3-row w3-section">
+              <div class="w3-col" style="width:50px"><i class="w3-xxlarge fa fa-pencil"></i></div>
+                <div class="w3-rest">
+                    <select class="w3-input w3-border" value={{data[2]}} name="gender" required>
+                        <option value={{data[2]}} selected hidden>{{data[2]}}</option>
+                        <option name="male">Male</option>
+                        <option name="female">Female</option>
+                        <option name="others">Others</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="w3-row w3-section">
+              <div class="w3-col" style="width:50px"><i class="w3-xxlarge 	fa fa-calendar"></i></div>
+                <div class="w3-rest">
+                    <select class="w3-input w3-border" name="dob_year" id="dob_year" onchange="date('year')" required>
+                        <option value={{date_data[2]}} selected hidden>{{date_data[2]}}</option>
+                        {% for year in years %}
+                            <option name={{year}} value={{year}} id={{year}}>{{year}}</option>
+                        {% endfor %}
+                    </select>
+                    <select class="w3-input w3-border" name="dob_month" id="dob_month" onchange="date('month')" required>
+                        <option value={{date_data[1]}} selected hidden>{{date_data[1]}}</option>
+                        {% for month in months %}
+                            <option name={{month}} value={{month}} id="{{month}}">{{month}}</option>
+                        {% endfor %}
+                    </select>
+                    <select class="w3-input w3-border" name="dob_day" id="dob_day" onchange="date('day')" required>
+                        <option value={{date_data[0]}} selected hidden>{{date_data[0]}}</option>
+                        {% for day in days %}
+                            <option name={{day}} value={{day}} id={{day}}>{{day}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <button class="w3-button w3-block w3-section w3-blue w3-ripple w3-padding" name="edit_profile">Edit profile</button>
+        </form>
+    </div>
+</body>
+<script>
+    function edit_profile() {
+        document.getElementById('edit_profile').style.display = "inline";
+    }
+    function togglePasswordVisibility(id) {
+        var passwordInput = document.getElementById(id);
+        var toggleButton = document.querySelector(".toggle-password");
+
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          toggleButton.textContent = "Hide";
+        } else {
+          passwordInput.type = "password";
+          toggleButton.textContent = "Show";
+        }
+    }
+    function date(value) {
+        if (value == "month") {
+            year = document.getElementById('dob_year').options[document.getElementById('dob_year').selectedIndex].value;
+            month = document.getElementById('dob_month').options[document.getElementById('dob_month').selectedIndex].value;
+            month = Number(month);
+            if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+                start = 1;
+                end = 32;
+                document.getElementById('dob_day').options.length = 0;
+                while (start < end) {
+                    x = document.createElement("option")
+                    x.text = start
+                    x.value = start
+                    document.getElementById('dob_day').add(x);
+                    start += 1;
+                }
+            }
+            else if (month == 4 || month == 6 || month == 9 || month == 11) {
+                start_2 = 1;
+                end_2 = 31;
+                document.getElementById('dob_day').options.length = 0;
+                while (start_2 < end_2) {
+                    x_2 = document.createElement("option");
+                    x_2.text = start_2;
+                    x_2.value = start_2;
+                    document.getElementById('dob_day').add(x_2);
+                    start_2 += 1;
+                }
+            }
+            else if (month == 2) {
+                if (year % 4 == 0) {
+                    start_3 = 1;
+                    end_3 = 30;
+                    document.getElementById('dob_day').options.length = 0;
+                    while (start_3 < end_3) {
+                        x_3 = document.createElement("option");
+                        x_3.text = start_3;
+                        x_3.value = start_3;
+                        document.getElementById('dob_day').add(x_3);
+                        start_3 += 1;
+                    }
+                }
+                else {
+                    start_4 = 1;
+                    end_4 = 29;
+                    document.getElementById('dob_day').options.length = 0;
+                    while (start_4 < end_4) {
+                        x_4 = document.createElement("option");
+                        x_4.text = start_4;
+                        x_4.value = start_4;
+                        document.getElementById('dob_day').add(x_4);
+                        start_4 += 1;
+                    }
+                }
+            }
+        }
+        else if (value == "year") {
+            year = document.getElementById('dob_year').options[document.getElementById('dob_year').selectedIndex].value;
+            month = document.getElementById('dob_month').options[document.getElementById('dob_month').selectedIndex].value;
+            if (year % 4 == 0 && month == 2) {
+                start_5 = 1;
+                end_5 = 30;
+                document.getElementById('dob_day').options.length = 0;
+                while (start_5 < end_5) {
+                    x_5 = document.createElement("option");
+                    x_5.text = start_5;
+                    x_5.value = start_5;
+                    document.getElementById('dob_day').add(x_5);
+                    start_5 += 1;
+                }
+            }
+        }
+    }
+    var element = document.getElementById("hide");
+    var originalText = element.textContent;
+    var maskedText = originalText.replace(/./g, '*');
+    element.textContent = maskedText;
+    function show() {
+        element.textContent = '{{data[4]}}';
+    }
+    function hide() {
+        element.textContent = maskedText;
+    }
+</script>
+</html>

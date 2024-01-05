@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HOME PAGE</title>
+</head>
+<style>
+    body{
+        background-color:azure
+    }
+    nav{
+        border:solid;
+        border-width:2px;
+        background-color:palegreen;
+        text-align:center;
+    }
+    ul{
+        display:flex;
+        justify-content:flex-end;
+        align-items:center
+    }
+    li{
+        margin-right:350px;
+        margin-left:-250px;
+        display:flex;
+        justify-content:center
+    }
+    button{
+        text-decoration:none;
+        padding:10px 15px;
+        border:5px solid;
+        border-color:white;
+        border-radius:5px;
+        background-color:wheat
+    }
+    .popup {
+        display:none;
+        position: fixed;
+        padding: 10px;
+        width: 600px;
+        left: 50%;
+        margin-left: -300px;
+        height: 400px;
+        top: 50%;
+        margin-top: -170px;
+        background: #FFF;
+        background-color:LightGoldenRodYellow;
+        border: 3px solid maroon;
+        z-index: 20
+    }
+    .edit {
+        display:none;
+        position: fixed;
+        padding: 10px;
+        width: 600px;
+        left: 50%;
+        margin-left: -300px;
+        height: 140px;
+        top: 50%;
+        margin-top: -170px;
+        background: #FFF;
+        background-color:LightGoldenRodYellow;
+        border: 3px solid maroon;
+        z-index: 20
+    }
+    .editing {
+        display:none;
+        position: fixed;
+        padding: 10px;
+        width: 600px;
+        left: 50%;
+        margin-left: -300px;
+        height: 400px;
+        top: 50%;
+        margin-top: -170px;
+        background: #FFF;
+        background-color:LightGoldenRodYellow;
+        border: 3px solid maroon;
+        z-index: 20
+    }
+    input {
+        height:35px;
+        width:250px;
+        border:solid;
+        border-width:3px;
+        border-color:peru;
+        background-color:lightcyan;
+        color:slategray;
+        font-size:20px
+    }
+</style>
+<script>
+    function newItem(use) {
+        if (use == 'show') {
+            document.getElementById("popup").style.display = "block";
+        }
+        else if (use == 'close') {
+            document.getElementById("popup").style.display = "none";
+        }
+    }
+    function edit(use_2) {
+        document.getElementById("edit").style.display = "block";
+        if (use_2 == 'close') {
+            document.getElementById("edit").style.display = "none";
+        }
+        else {
+            x = use_2
+        }
+    }
+    function editing(hello) {
+        if (hello == 'rename') {
+            document.getElementById("editing").style.display = "block";
+            document.getElementById("old_name").value = x;
+            document.getElementById("old_name").style.display = "none";
+        }
+        if (hello == 'delete') {
+            document.getElementById("delete_item").value = x;
+            document.getElementById("delete_item").style.display = "none";
+            document.getElementById("submit_auto").click();
+            {{delete()}}
+        }
+        else if (hello == 'close') {
+            document.getElementById("editing").style.display = "none";
+        }
+    }
+    function rename() {
+        {{rename()}}
+    }
+    function reload() {
+        window.location.href='http://127.0.0.1:5000/';
+    }
+</script>
+<body>
+    <button style="position:absolute;top:120.5px;width:1400px;font-size:20px" onclick="reload()" id="reload_button">Reload for changes</button>
+
+    <nav>
+        <ul>
+            <li style="font-size:30px">NAVIGATION TOOLS :</li>
+            <li><button onclick="window.location.href='http://127.0.0.1:5000/'">ADD ITEMS</button></li>
+            <li><button onclick="window.location.href='http://127.0.0.1:5000/bill'">BILL</button></li>
+        </ul>
+    </nav>
+
+    <br> <br> <button onclick="newItem('show')" id="add" style="float:right">ADD ITEM</button><br><br>
+    <div class="popup" id="popup">
+        <nav style="height:70px">
+            <ul>
+                <li style="margin-right:240px;font-size:30px">ADD ITEM</li>
+            </ul>
+        </nav>
+        <br> <button onclick="newItem('close')" style="float:right">Close</button>
+        <form method="POST" action="http://127.0.0.1:5000/">
+            <center>
+                <br> <br> <br> <input name="name" type="text" placeholder="Item name" required> <br> <br> <br>
+                <input name="price" type="number" placeholder="Price" required> <br> <br> <br>
+                <input name="submit_1" type="submit" style="background-color:rosybrown;color:white;border-color:peru">
+            </center>
+        </form>
+    </div>
+
+    <div class="edit" id="edit">
+        <nav style="height:70px">
+            <ul>
+                <li style="margin-right:240px;font-size:30px">EDIT ITEM</li>
+            </ul>
+        </nav>
+        <br> <button onclick="edit('close')" style="float:right">Close</button>
+        <br> <br> <button onclick="editing('rename')" style="position:absolute;top:100px;float:left">RENAME</button>
+        <br> <br> <button onclick="editing('delete')" style="position:absolute;top:100px;left:45%">DELETE</button>
+    </div>
+
+    <div class="editing" id="editing">
+        <nav style="height:70px">
+            <ul>
+                <li style="margin-right:240px;font-size:30px">RENAME ITEM</li>
+            </ul>
+        </nav>
+        <br> <button onclick="editing('close')" style="float:right">Close</button>
+        <form method="POST" action="http://127.0.0.1:5000/">
+            <center>
+                <br> <br> <br> <input name="old_name" type="text" id="old_name" placeholder="Old item name" readonly> <br>
+                <input name="new_name" type="text" placeholder="New item name" required> <br> <br> <br>
+                <input name="new_price" type="number" placeholder="New price" required> <br> <br> <br>
+                <input type="submit" name="submit_2" id="submitting" style="background-color:rosybrown;color:white;border-color:peru" onclick="rename()">
+            </center>
+        </form>
+    </div>
+
+    <form style="display:none" method="post" action="http://127.0.0.1:5000/">
+        <input type="text" name="delete_item" id="delete_item" readonly>
+        <input type="submit" id="submit_auto">
+    </form>
+
+    {% for element in info %}
+        <p name={{element[1]}} value={{element[2]}} onclick="edit('{{element[1]}}')" style="background-color:white;color:slategray;font-size:20px;height:70px">
+            <br> &nbsp;&nbsp;&nbsp; {{element[1]}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{element[2]}}
+        </p>
+    {% endfor %}
+</body>
+</html>

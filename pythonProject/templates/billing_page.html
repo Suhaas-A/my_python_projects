@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>BILLING PAGE</title>
+</head>
+<style>
+    body{
+        background-color:azure
+    }
+    nav{
+        border:solid;
+        border-width:2px;
+        background-color:palegreen;
+        text-align:center;
+        height:75px
+    }
+    ul{
+        display:flex;
+        justify-content:flex-end;
+        align-items:center
+    }
+    li{
+        margin-right:350px;
+        margin-left:-250px;
+        display:flex;
+        justify-content:center
+    }
+    button{
+        text-decoration:none;
+        padding:10px 15px;
+        border:5px solid;
+        border-color:white;
+        border-radius:5px;
+        background-color:wheat
+    }
+    div {
+        display:none;
+        overflow-y:auto;
+        position: fixed;
+        padding: 10px;
+        width: 600px;
+        left: 50%;
+        margin-left: -300px;
+        height: 400px;
+        top: 50%;
+        margin-top: -170px;
+        background: #FFF;
+        background-color:LightGoldenRodYellow;
+        border: 3px solid maroon;
+        z-index: 20
+    }
+    input {
+        height:35px;
+        width:150px;
+        border:solid;
+        border-width:3px;
+        border-color:peru;
+        background-color:lightcyan;
+        color:slategray;
+        font-size:20px;
+        position:absolute
+    }
+    p {
+        background-color:white;
+        color:slategray;
+        font-size:20px;
+        height:70px;
+        display:flex;
+        align-items:center
+    }
+</style>
+<script>
+    unique_x = "";
+    function add_bill() {
+        document.getElementById('bill_name').style.display = "block";
+    }
+    past_item = null;
+    function edit_bill(use_2) {
+        unique_x = String(use_2);
+        $.ajax({
+            url: '/bill',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ 'value': unique_x })
+        });
+        document.getElementById("add_bills").style.display = "block";
+        {{database()}}
+    }
+    function add_item() {
+        document.getElementById('add_items').style.display = "block";
+        document.getElementById('clause').value = unique_x
+    }
+    function adding() {
+        document.getElementById('add_items').style.display = "none";
+        {{adding_items()}}
+    }
+</script>
+<body>
+    <form id="i_form" style="display:none" method="post">
+        <input type="number" name="id_get" id="id_get">
+        <input type="submit" name="i_submit">
+    </form>
+
+    <button style="position:absolute;top:120.5px;width:1400px;font-size:20px" onclick="window.location.href='http://127.0.0.1:5000/bill'" id="reload_button">Reload for changes</button>
+
+    <nav>
+        <ul>
+            <li style="font-size:30px">NAVIGATION TOOLS :</li>
+            <li><button onclick="window.location.href='http://127.0.0.1:5000/'">ADD ITEMS</button></li>
+            <li><button onclick="window.location.href='http://127.0.0.1:5000/bill'">BILL</button></li>
+        </ul>
+    </nav>
+
+    <br> <br> <button onclick="add_bill()" id="add" style="float:right">NEW BILL</button><br><br>
+
+    <div id="bill_name">
+        <nav>
+            <ul>
+                <li style="font-size:30px">ADD A NEW BILL</li>
+            </ul>
+        </nav>
+        <form method="post" onsubmit="{{insert_bill()}}">
+            <br><br><input type="text" name="bill_name" placeholder="Name of the person" style="width:300px;left:25%"> <br><br><br><br>
+            <input type="tel" name="phone_number" placeholder="Phone number of the person" style="width:300px;left:25%"> <br><br><br><br>
+            <input type="email" name="email" placeholder="Email id of the person" style="width:300px;left:25%"> <br><br><br><br>
+            <input type="submit" name="submit_bill_name" style="width:300px;left:25%">
+        </form>
+    </div>
+
+    <div id="add_bills">
+        <nav>
+            <ul>
+                <li><button style="position:absolute;left:60px;top:27.7px">NAME</button></li>
+                <li><button style="position:absolute;left:255px;top:27.7px">QUANTITY</button></li>
+                <li><button style="position:absolute;left:480px;top:27.7px">PRICE</button></li>
+            </ul>
+        </nav>
+
+        <br> <button onclick="add_item()" style="position:absolute;left:500px">ADD ITEM</button> <br> <br>
+
+        {% for all_items in new_readings %}
+            <br> <p style="height:30px"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{all_items[0]}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{all_items[2]}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{all_items[1]}}</p>
+        {% endfor %}
+        <br> <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total Price &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{total_price}}</p>
+    </div>
+
+    <div id="add_items">
+        <nav>
+            <ul>
+                <li><button style="position:absolute;left:60px;top:27.7px">NAME</button></li>
+                <li><button style="position:absolute;left:255px;top:27.7px">QUANTITY</button></li>
+                <li><button style="position:absolute;left:480px;top:27.7px">PRICE</button></li>
+            </ul>
+        </nav>
+        <form method="post" action="http://127.0.0.1:5000/bill" onsubmit="adding()">
+            <input type="text" id="clause" name="clause" style="display:none" readonly>
+            <select name="item_name" required style="position:absolute;left:60px;top:120px;width:300px;height:40px;font-size:20px">
+                {% for each_item in readings %}
+                    <option value='{{each_item[0]}}'>{{each_item[0]}}</option>
+                {% endfor %}
+            </select>
+            <input type="number" placeholder="Item quantity" name="item_quantity" required style="position:absolute;left:60px;top:190px;width:300px"> <br>
+            <input type="submit" name="item_submit" style="position:absolute;left:60px;top:270px;width:300px">
+        </form>
+    </div>
+    <br> <br>
+
+    {% for each_information in all_information %}
+        <p onclick="edit_bill({{each_information[4]}})">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{each_information[0]}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{each_information[1]}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{each_information[2]}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{each_information[3]}}</p>
+    {% endfor %}
+</body>
+</html>

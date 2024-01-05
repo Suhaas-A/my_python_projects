@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+	{% if username != None and password != None %}:
+		{% for mail in all_info %}:
+			<p>
+				Number : {{mail[0]}} <br>
+				Date : {{mail[1]}} <br>
+				From : {{mail[5]}} <br>
+				To : {{mail[4]}} <br>
+				Subject : {{mail[2]}} <br>
+				Content : {{mail[3]}} <br>
+			</p>
+		{% endfor %}
+	{% endif %}
+</body>
+
+</html>
